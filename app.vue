@@ -6,8 +6,9 @@
 </template>
 
 <script setup lang="ts">
-import { useAuth } from '@/composables/useAuth'
+import { useAuth } from '~/composables/useAuth'
 
 const { loadUser } = useAuth()
-loadUser()
+
+onMounted(() => loadUser())
 </script>
