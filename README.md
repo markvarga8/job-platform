@@ -1,75 +1,94 @@
-# Nuxt Minimal Starter
+# 🤩 Kibit Job Advertisement Platform
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This is a Nuxt 3 project built as a **job advertisement platform** for the Kibit Home Assignment.
 
-## Setup
+It includes:
 
-Make sure to install dependencies:
+- ✅ Job posting and dashboard
+- 🔍 Job search and detail pages
+- 🔐 Mock authentication with example users
+- 🦪 Type-safe validation with Zod
+- 🎨 Tailwind CSS for styling
+- ⚙️ ESLint + Prettier for consistent code
+
+---
+
+## 📦 Stack
+
+- [Nuxt 3](https://nuxt.com)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Zod](https://zod.dev/)
+- [Headless UI](https://headlessui.com/) & [Heroicons](https://heroicons.com/) (optional UI)
+- [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/)
+
+---
+
+## 🚀 Setup
+
+Install dependencies:
 
 ```bash
-# npm
-npm install
-
-# pnpm
 pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+Start development server:
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
 pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+---
 
-Build the application for production:
+## 🛠️ Scripts
 
-```bash
-# npm
-npm run build
+| Command        | Description                |
+| -------------- | -------------------------- |
+| `pnpm dev`     | Start development server   |
+| `pnpm build`   | Build for production       |
+| `pnpm preview` | Preview production build   |
+| `pnpm lint`    | Run ESLint                 |
+| `pnpm format`  | Format code using Prettier |
 
-# pnpm
-pnpm build
+---
 
-# yarn
-yarn build
+## 🥪 Example Users
 
-# bun
-bun run build
-```
+Use these predefined credentials to test login:
 
-Locally preview production build:
+| Role           | Email                  | Password      |
+| -------------- | ---------------------- | ------------- |
+| Job Advertiser | `employer@example.com` | `password123` |
+| Job Seeker     | `seeker@example.com`   | `password123` |
 
-```bash
-# npm
-npm run preview
+> These are mocked in `localStorage` and validated with Zod.
 
-# pnpm
-pnpm preview
+---
 
-# yarn
-yarn preview
+## 🧰 Notes
 
-# bun
-bun run preview
-```
+- No backend — all data is stored in `localStorage` or in-memory.
+- You can safely refresh the browser; data will persist between sessions for logged-in users.
+- The project follows Vue/Nuxt best practices and is fully mobile responsive.
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+---
+
+## 🔍 Search Functionality
+
+The job search includes:
+
+- Filterable search bar
+- Detail view with job application option
+
+---
+
+## 📄 Assignment Compliance
+
+This project fulfills the requirements defined in the Kibit Home Assignment:
+
+- ✅ Landing page for unauthenticated users
+- ✅ Job posting form and dashboard with edit/delete
+- ✅ Search + detail view + application option
+- ✅ Mock API layer with sample users
+- ✅ Vue 3 best practices via Nuxt 3
+
