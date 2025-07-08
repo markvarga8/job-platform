@@ -10,14 +10,14 @@ const user = ref<User | null>(null)
 export function useAuth() {
   const isLoggedIn = computed(() => user.value !== null)
 
-  function loadUser() {
+  const loadUser = () => {
     const stored = localStorage.getItem(AUTH_KEY)
     if (stored) {
       user.value = JSON.parse(stored)
     }
   }
 
-  function login(input: LoginInput): { success: boolean; message?: string } {
+  const login = (input: LoginInput): { success: boolean; message?: string } => {
     const parsed = loginSchema.safeParse(input)
     if (!parsed.success) {
       return { success: false, message: 'Invalid input' }
@@ -38,7 +38,7 @@ export function useAuth() {
     return { success: true }
   }
 
-  function logout() {
+  const logout = () => {
     user.value = null
     localStorage.removeItem(AUTH_KEY)
   }
