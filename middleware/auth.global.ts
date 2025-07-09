@@ -1,28 +1,22 @@
-import { useAuth } from '~/composables/useAuth'
+import { useAuthStore } from '~/stores/auth'
 import { defineNuxtRouteMiddleware, navigateTo } from '#app'
 
 export default defineNuxtRouteMiddleware((to) => {
-  const { user } = useAuth()
+  if (process.client) {
+    const auth = useAuthStore()
+    auth.loadUser()
 
-  const publicPages = ['/', '/login']
+    const publicPages = ['/', '/login']
+    const isPublic = publicPages.includes(to.path)
 
-  const isPublic = publicPages.includes(to.path)
+    console.log(isPublic, auth.getUser)
 
-  // redirect to login
-  if (!user.value && !isPublic) {
-    return navigateTo('/login')
-  }
+    if (!auth.isLoggedIn && !isPublic) {
+      return navigateTo('/login')
+    }
 
-  // e.g. permission-based redirect (dashboard pages)
-  if (to.path.startsWith('/dashboard') && user.value?.role !== 'advertiser') {
-    return navigateTo('/login')
-  }
-
-  if (to.path.startsWith('/jobs') && user.value?.role !== 'seeker') {
-    return navigateTo('/login')
-  }
-
-  if (to.path === '/login' && user.value) {
-    return navigateTo('/dashboard')
+    if (isPublic && auth.isLoggedIn) {
+      return navigateTo('/dashboard')
+    }
   }
 })

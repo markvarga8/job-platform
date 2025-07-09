@@ -8,7 +8,8 @@ export interface User {
   email: string
   password: string
   name: string
-  role: UserRole
+  role: UserRole,
+  appliedJobIds?: number[]
 }
 
 export type LoginInput = z.infer<typeof loginSchema>

@@ -6,5 +6,5 @@ export const jobSchema = z.object({
   description: z.string().default(''),
   location: z.string().default(''),
   createdAt: z.string().default(''),
-  userId: z.number().default(0),
+  userId: z.number().default(0)
 }).default({})

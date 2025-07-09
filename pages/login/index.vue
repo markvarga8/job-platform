@@ -6,7 +6,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const { login, isLoggedIn } = useAuth()
+const { login } = useAuth()
 
 useHead({ title: 'Login' })
 
@@ -35,20 +35,22 @@ const handleLogin = () => {
       </template>
 
       <UForm :state="formData" :schema="loginSchema" @submit="handleLogin" class="space-y-4">
-        <UInput
-          v-model="formData.email"
-          name="email"
-          type="email"
-          placeholder="you@example.com"
-          label="Email"
-        />
-        <UInput
-          v-model="formData.password"
-          name="password"
-          type="password"
-          placeholder="********"
-          label="Password"
-        />
+        <div class="flex flex-col md:flex-row md:justify-around gap-4">
+          <UInput
+            v-model="formData.email"
+            name="email"
+            type="email"
+            placeholder="you@example.com"
+            label="Email"
+          />
+          <UInput
+            v-model="formData.password"
+            name="password"
+            type="password"
+            placeholder="********"
+            label="Password"
+          />
+        </div>
 
         <UButton type="submit" block>Login</UButton>
 

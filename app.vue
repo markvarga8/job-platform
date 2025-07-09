@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useAuth } from '~/composables/useAuth'
+import { useAuthStore } from '~/stores/auth'
 
-const { loadUser } = useAuth()
+const auth = useAuthStore()
 
-onMounted(() => loadUser())
+onMounted(() => auth.loadUser())
 </script>
 
 <template>
