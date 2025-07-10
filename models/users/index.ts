@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { loginSchema } from './schemas'
 
-export type UserRole = 'advertiser' | 'seeker'
+export type UserRole = 'employer' | 'seeker'
 
 export interface User {
   id: number

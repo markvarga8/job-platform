@@ -2,21 +2,21 @@ import { useAuthStore } from '~/stores/auth'
 import { defineNuxtRouteMiddleware, navigateTo } from '#app'
 
 export default defineNuxtRouteMiddleware((to) => {
-  if (process.client) {
-    const auth = useAuthStore()
-    auth.loadUser()
+  if (!process.client) return
 
-    const publicPages = ['/', '/login']
-    const isPublic = publicPages.includes(to.path)
+  const auth = useAuthStore()
+  auth.loadUser()
 
-    console.log(isPublic, auth.getUser)
+  const publicPages = ['/', '/login']
+  const isPublic = publicPages.includes(to.path)
 
-    if (!auth.isLoggedIn && !isPublic) {
-      return navigateTo('/login')
-    }
+  const isSeekerAllowedPage = to.path.startsWith('/jobs') || to.path.startsWith('/apply')
 
-    if (isPublic && auth.isLoggedIn) {
-      return navigateTo('/dashboard')
-    }
+  if (!auth.isLoggedIn && !isPublic) {
+    return navigateTo('/login')
+  }
+
+  if (auth.isLoggedIn && auth.user?.role === 'seeker' && !isSeekerAllowedPage) {
+    return navigateTo('/jobs')
   }
 })

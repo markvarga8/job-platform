@@ -1,32 +1,29 @@
 <script setup lang="ts">
-import { defineProps, defineEmits, type PropType } from 'vue'
-import { jobSchema } from '~/models/job/schemas'
+import { ref, computed, watch, defineProps, defineEmits } from 'vue'
 import type { JobFormInput } from '~/models/job/index'
-import { useJobStore } from '@/stores/jobs'
+import { useJobStore } from '~/stores/jobs'
+import { jobSchema } from '~/models/job/schemas'
+import { useToast } from '#imports'
 
-const props = defineProps({
-  job: {
-    type: Object as PropType<JobFormInput>,
-    default: () => {},
-  },
-  showModal: {
-    type: Boolean,
-    required: true,
-  },
-})
+const props = defineProps<{
+  job: JobFormInput
+  showModal: boolean
+}>()
 
-const emit = defineEmits(['onShowModal'])
+const emit = defineEmits<{
+  (e: 'onShowModal', value: boolean): void
+}>()
+
+const jobStore = useJobStore()
+const toast = useToast()
 
 const isOpen = computed({
-  get() {
-    return props.showModal
-  },
-  set(newVal) {
-    emit('onShowModal', newVal)
-  },
+  get: () => props.showModal,
+  set: (val) => emit('onShowModal', val),
 })
 
-const formData = ref<JobFormInput>(jobSchema.parse(props.job))
+const formData = ref<JobFormInput>({ ...props.job })
+const isSubmitting = ref(false)
 
 watch(isOpen, async (newValue) => {
   if (!newValue) {
@@ -36,35 +33,73 @@ watch(isOpen, async (newValue) => {
   }
 })
 
-const jobStore = useJobStore()
+const handleUpdate = async () => {
+  const { title } = formData.value
 
-const handleUpdate = () => {
+  if (!title.trim()) {
+    toast.add({
+      title: 'Title is required',
+      description: 'Please fill title fields before saving.',
+      color: 'error',
+    })
+    return
+  }
+
+  isSubmitting.value = true
+
   jobStore.updateJob(props.job.id, formData.value)
+
+  toast.add({
+    title: 'Job updated successfully',
+    description: 'Your changes were saved.',
+    color: 'success',
+  })
+
   isOpen.value = false
+  isSubmitting.value = false
 }
 </script>
 
 <template>
-  <div>
-    <UModal v-model:open="isOpen" title="Edit Job" :ui="{ footer: 'justify-end' }">
-      <template #body>
-        <UCard>
-          <template #header>
-            <h2 class="text-lg font-semibold">{{ formData.title }}</h2>
-          </template>
+  <UModal v-model:open="isOpen" title="Edit Job" :ui="{ footer: 'justify-end' }">
+    <template #body>
+      <UCard>
+        <template #header>
+          <h2 class="text-lg font-semibold">Editing: {{ formData.title || 'Job' }}</h2>
+        </template>
 
-          <UForm :state="formData" :schema="jobSchema" @submit="handleUpdate" class="space-y-4">
-            <UInput v-model="formData.title" name="title" label="Job Title" />
-            <UInput v-model="formData.location" name="location" label="Location" />
-            <UTextarea v-model="formData.description" name="description" label="Description" />
-          </UForm>
-        </UCard>
-      </template>
+        <UForm class="space-y-4">
+          <UInput
+            v-model="formData.title"
+            name="title"
+            label="Job Title"
+            placeholder="Frontend Developer"
+            class="w-full"
+          />
+          <UInput
+            v-model="formData.location"
+            name="location"
+            label="Location"
+            placeholder="Budapest, Remote..."
+            class="w-full"
+          />
+          <UTextarea
+            v-model="formData.description"
+            name="description"
+            label="Description"
+            placeholder="What should the applicant know?"
+            autoresize
+            class="w-full"
+          />
+        </UForm>
+      </UCard>
+    </template>
 
-      <template #footer="{ close }">
-        <UButton label="Cancel" color="neutral" variant="outline" @click="close" />
-        <UButton @click="handleUpdate()">Edit</UButton>
-      </template>
-    </UModal>
-  </div>
+    <template #footer>
+      <UButton label="Cancel" color="gray" variant="outline" @click="isOpen = false" />
+      <UButton @click="handleUpdate" form="edit-job-form" :loading="isSubmitting">
+        Save Changes
+      </UButton>
+    </template>
+  </UModal>
 </template>
