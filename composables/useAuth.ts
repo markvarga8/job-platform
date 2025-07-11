@@ -1,31 +1,28 @@
-import { ref, computed } from 'vue'
-import { loginSchema } from '~/models/users/schemas'
-import type { LoginInput, User } from '~/models/users'
-import { mockUsers } from '~/lib/users'
-import { useAuthStore } from '~/stores/auth'
+import { loginSchema } from '~/models/users/schemas';
+import type { LoginInput } from '~/models/users';
+import { mockUsers } from '~/lib/users';
+import { useAuthStore } from '~/stores/auth';
 
 export const useAuth = () => {
-  const auth = useAuthStore()
+  const auth = useAuthStore();
 
   const login = (input: LoginInput): { success: boolean; message?: string } => {
-    const parsed = loginSchema.safeParse(input)
+    const parsed = loginSchema.safeParse(input);
     if (!parsed.success) {
-      return { success: false, message: 'Invalid input' }
+      return { success: false, message: 'Invalid input' };
     }
 
     const user = mockUsers.find(
-      (u) =>
-        u.email === parsed.data.email &&
-        u.password === parsed.data.password
-    )
+      (u) => u.email === parsed.data.email && u.password === parsed.data.password
+    );
 
     if (!user) {
-      return { success: false, message: 'Invalid credentials' }
+      return { success: false, message: 'Invalid credentials' };
     }
 
-    auth.setUser(user)
-    return { success: true }
-  }
+    auth.setUser(user);
+    return { success: true };
+  };
 
-  return { login }
-}
+  return { login };
+};

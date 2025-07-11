@@ -1,44 +1,44 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useHead } from '#imports'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useHead } from '#imports';
 
-import { useAuth } from '~/composables/useAuth'
-import { useAuthStore } from '~/stores/auth'
-import { loginSchema } from '~/models/users/schemas'
-import type { LoginInput } from '~/models/users/index'
+import { useAuth } from '~/composables/useAuth';
+import { useAuthStore } from '~/stores/auth';
+import { loginSchema } from '~/models/users/schemas';
+import type { LoginInput } from '~/models/users/index';
 
-useHead({ title: 'Login' })
+useHead({ title: 'Login' });
 
-const router = useRouter()
-const auth = useAuthStore()
-const { login } = useAuth()
+const router = useRouter();
+const auth = useAuthStore();
+const { login } = useAuth();
 
-const formData = ref<LoginInput>(loginSchema.parse({}))
-const error = ref<string | null>(null)
-const isLoading = ref(false)
+const formData = ref<LoginInput>(loginSchema.parse({}));
+const error = ref<string | null>(null);
+const isLoading = ref(false);
 
 const handleLogin = async () => {
-  error.value = null
-  isLoading.value = true
+  error.value = null;
+  isLoading.value = true;
 
-  const { success, message } = await login(formData.value)
+  const { success, message } = await login(formData.value);
 
-  isLoading.value = false
+  isLoading.value = false;
 
   if (!success) {
-    error.value = message ?? 'Login failed'
-    return
+    error.value = message ?? 'Login failed';
+    return;
   }
 
-  const redirectTo = auth.getUser?.role === 'employer' ? '/dashboard' : '/jobs'
-  router.push(redirectTo)
-}
+  const redirectTo = auth.getUser?.type === 'employer' ? '/dashboard' : '/jobs';
+  router.push(redirectTo);
+};
 
-const loginAs = (role: 'employer' | 'seeker') => {
-  formData.value.email = `${role}@example.com`
-  formData.value.password = 'password123'
-}
+const loginAs = (role: 'employer' | 'applicant') => {
+  formData.value.email = `${role}@example.com`;
+  formData.value.password = 'password123';
+};
 </script>
 
 <template>
@@ -54,9 +54,9 @@ const loginAs = (role: 'employer' | 'seeker') => {
             </UButton>
           </UTooltip>
 
-          <UTooltip text="Login as job seeker to browse and apply">
-            <UButton size="xs" color="primary" @click="loginAs('seeker')">
-              Login as Seeker
+          <UTooltip text="Login as job applicant to browse and apply">
+            <UButton size="xs" color="primary" @click="loginAs('applicant')">
+              Login as Applicant
             </UButton>
           </UTooltip>
         </div>

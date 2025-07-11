@@ -1,41 +1,49 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
-import { useJobStore } from '~/stores/jobs'
-import { useHead } from '#imports'
+import { ref, computed, watch, onMounted } from 'vue';
+import { useJobStore } from '~/stores/jobs';
+import { useHead } from '#imports';
 
-useHead({ title: 'Job Listings' })
+useHead({ title: 'Job List' });
 
-const jobStore = useJobStore()
-const isLoading = ref(true)
+const jobStore = useJobStore();
+const isLoading = ref(true);
 
-const searchRaw = ref('')
-const search = ref('')
-const debounceDelay = 300
+const searchRaw = ref('');
+const search = ref('');
+const debounceDelay = 300;
 
-let timeout: ReturnType<typeof setTimeout>
+let timeout: ReturnType<typeof setTimeout>;
 
 watch(searchRaw, (val) => {
-  clearTimeout(timeout)
+  clearTimeout(timeout);
   timeout = setTimeout(() => {
-    search.value = val
-  }, debounceDelay)
-})
+    search.value = val;
+  }, debounceDelay);
+});
 
 onMounted(async () => {
-  await jobStore.loadJobs()
-  isLoading.value = false
-})
+  await jobStore.loadJobs();
+  isLoading.value = false;
+});
 
 const filteredJobs = computed(() => {
-  const keyword = search.value.trim().toLowerCase()
+  const keyword = search.value.trim().toLowerCase();
 
-  if (!keyword) return jobStore.jobs
+  if (!keyword) return jobStore.jobs;
 
-  return jobStore.jobs.filter((job) =>
-    job.title.toLowerCase().includes(keyword) ||
-    job.location.toLowerCase().includes(keyword)
-  )
-})
+  return jobStore.jobs.filter(
+    (job) =>
+      job.title.toLowerCase().includes(keyword) || job.location.toLowerCase().includes(keyword)
+  );
+});
+
+const notFoundText = computed(() => {
+  if (jobStore.jobs.length > 0 && !filteredJobs.value.length) {
+    return 'We couldn’t find any jobs matching your search. Try using different keywords or clearing the filters.';
+  }
+
+  return 'No jobs available right now';
+});
 </script>
 
 <template>
@@ -52,25 +60,10 @@ const filteredJobs = computed(() => {
       <UProgress animation="swing" size="md" icon="i-heroicons-arrow-path" />
     </div>
 
-    <div v-else-if="filteredJobs.length === 0" class="text-center text-gray-500 italic py-10">
-      No matching jobs found.
-    </div>
+    <no-results-box v-else-if="filteredJobs.length === 0" :not-found-text="notFoundText" />
 
     <div v-else class="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
-      <UCard
-        v-for="job in filteredJobs"
-        :key="job.id"
-        class="cursor-pointer hover:ring-1 hover:ring-primary-500 transition"
-        @click="$router.push(`/jobs/${job.id}`)"
-      >
-        <template #header>
-          <div class="flex justify-between items-start">
-            <h2 class="text-lg font-semibold break-words">{{ job.title }}</h2>
-            <span class="text-sm text-gray-500 whitespace-nowrap">{{ job.location }}</span>
-          </div>
-        </template>
-        <p class="text-sm text-gray-600 line-clamp-3">{{ job.description }}</p>
-      </UCard>
+      <job-list-item v-for="job in filteredJobs" :key="`job-${job.id}`" :job="job" />
     </div>
   </div>
 </template>

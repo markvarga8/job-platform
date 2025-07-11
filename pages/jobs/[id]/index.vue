@@ -1,60 +1,62 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
-import { useJobStore } from '~/stores/jobs'
-import { useAuthStore } from '~/stores/auth'
-import { storeToRefs } from 'pinia'
-import type { JobFormInput } from '~/models/job/index'
+import { ref, computed, watch, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useJobStore } from '~/stores/jobs';
+import { useAuthStore } from '~/stores/auth';
+import { storeToRefs } from 'pinia';
+import type { JobFormInput } from '~/models/job/index';
+import { useHead, useToast } from '#imports';
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
 
-const jobStore = useJobStore()
-const authStore = useAuthStore()
-const toast = useToast()
+const jobStore = useJobStore();
+const authStore = useAuthStore();
+const toast = useToast();
 
-const { user } = storeToRefs(authStore)
+const { user } = storeToRefs(authStore);
 
-const isLoading = ref(true)
-const job = ref<JobFormInput | null>(null)
+const isLoading = ref(true);
+const job = ref<JobFormInput | null>(null);
 
-const jobId = Number(route.params.id)
+const jobId = Number(route.params.id);
 
 const loadJob = async () => {
-  await jobStore.loadJobs()
-  const foundJob = jobStore.getJobById(jobId)
+  await jobStore.loadJobs();
+  const foundJob = jobStore.getJobById(jobId);
   if (!foundJob) {
-    router.replace('/jobs')
-    return
+    router.replace('/jobs');
+    return;
   }
-  job.value = foundJob
-  isLoading.value = false
-}
+  job.value = foundJob;
+  isLoading.value = false;
+};
 
 onMounted(() => {
-  isLoading.value = false
-  loadJob()
-})
+  isLoading.value = false;
+  loadJob();
+});
 
 const hasApplied = computed(() => {
-  return authStore.hasApplied(jobId)
-})
+  return authStore.hasApplied(jobId);
+});
 
 watch(job, (newJob) => {
   if (newJob) {
     useHead({
       title: `${newJob.title} – Job Details`,
-    })
+    });
   }
-})
+});
 
 const handleApply = () => {
-  authStore.applyToJob(jobId)
+  authStore.applyToJob(jobId);
   toast.add({
     title: 'Application sent',
     description: 'You have successfully applied for this job.',
     color: 'success',
-  })
-}
+  });
+};
 </script>
 
 <template>
@@ -73,7 +75,7 @@ const handleApply = () => {
         <p class="text-base whitespace-pre-line">{{ job.description }}</p>
       </UCard>
 
-      <div v-if="user?.role === 'seeker'" class="mt-6">
+      <div v-if="user?.type === 'applicant'" class="mt-6">
         <UAlert v-if="hasApplied" variant="subtle" title="You have already applied for this job." />
         <UButton v-else color="primary" block @click="handleApply"> Apply for this job </UButton>
       </div>

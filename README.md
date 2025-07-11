@@ -1,6 +1,6 @@
 # 🤝 Job Platform
 
-This is a Nuxt 3 project created as part of the **Kibit Home Assignment**. It simulates a simple job advertisement platform, enabling users to post, manage, search, and apply for job offers with mock authentication.
+This is a Nuxt 3 project created as part of the **Home Assignment**. It simulates a simple job advertisement platform, enabling users to post, manage, search, and apply for job offers with mock authentication.
 
 **🌐 Live Demo:** [https://kibit-job-platform.vercel.app](https://kibit-job-platform.vercel.app)
 
@@ -76,7 +76,7 @@ All role-based access is enforced via Nuxt route middleware.
 
 ```bash
 git clone <your-repo-url>
-cd kibit-job-platform
+cd job-platform
 ```
 
 ### 2. Install dependencies (pnpm preferred)
@@ -97,10 +97,10 @@ Visit `http://localhost:3000` to see the app.
 
 ## 🔑 Demo Accounts
 
-| Role       | Email                                                | Password    |
-| ---------- | ---------------------------------------------------- | ----------- |
-| Employer   | [employer@example.com](mailto\:employer@example.com) | password123 |
-| Job Seeker | [seeker@example.com](mailto\:seeker@example.com)     | password123 |
+| Role      | Email                                                 | Password    |
+| --------- | ----------------------------------------------------- | ----------- |
+| Employer  | [employer@example.com](mailto:employer@example.com)   | password123 |
+| Applicant | [applicant@example.com](mailto:applicant@example.com) | password123 |
 
 You can test the full app with these predefined users. No registration required.
 
@@ -150,20 +150,19 @@ Unit test example included for `JobCreateModal.vue`
 
 ## ✅ Assignment Compliance Checklist
 
-* [x] Landing page for unauthenticated users
-* [x] Login with mocked users
-* [x] Dashboard for job advertisers
-* [x] Job posting (create/edit/delete)
-* [x] Search + detail view + application option
-* [x] Mock API layer using localStorage
-* [x] Nuxt 3 with Tailwind CSS and TypeScript
-* [x] Fully responsive
-* [x] Role-based navigation guard
-* [x] Extra: Pinia + composables + Zod validation + testing
+- [x] Landing page for unauthenticated users
+- [x] Login with mocked users
+- [x] Dashboard for job advertisers
+- [x] Job posting (create/edit/delete)
+- [x] Search + detail view + application option
+- [x] Mock API layer using localStorage
+- [x] Nuxt 3 with Tailwind CSS and TypeScript
+- [x] Fully responsive
+- [x] Role-based navigation guard
+- [x] Extra: Pinia + composables + Zod validation + testing
 
 ---
 
 ## 👨‍💻 Author
 
-Built by Márk Varga for the Kibit Home Assignment.
-
+Built by Márk Varga for the Home Assignment.

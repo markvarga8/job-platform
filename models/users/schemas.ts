@@ -1,7 +1,8 @@
+import { z } from 'zod';
 
-import { z } from 'zod'
-
-export const loginSchema = z.object({
-  email: z.string().default(''),
-  password: z.string().default(''),
-}).default({})
+export const loginSchema = z
+  .object({
+    email: z.string().default(''),
+    password: z.string().default(''),
+  })
+  .default({});
