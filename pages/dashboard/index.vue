@@ -18,8 +18,8 @@ const isShowJobEditModal = ref(false);
 const isLoading = ref(true);
 const jobToEdit = ref<JobFormInput | null>(null);
 
-onMounted(() => {
-  loadMyJobs();
+onMounted(async () => {
+  await loadMyJobs();
   isLoading.value = false;
 });
 

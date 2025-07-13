@@ -1,11 +1,19 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useAuthStore } from '~/stores/auth';
 import { useRouter, useRoute } from 'vue-router';
 
 const auth = useAuthStore();
 const router = useRouter();
 const route = useRoute();
+
+const hydrated = ref(false);
+
+// Wait for hydration
+onMounted(async () => {
+  await auth.loadUser();
+  hydrated.value = true;
+});
 
 const logout = () => {
   auth.logout();
@@ -31,7 +39,7 @@ const isActive = (path: string) => route.path === path;
 
       <nav class="flex items-center gap-3">
         <UButton
-          v-if="isEmployer && !isActive('/dashboard') && isLoggedIn"
+          v-if="hydrated && isEmployer && !isActive('/dashboard') && isLoggedIn"
           variant="link"
           color="primary"
           @click="router.push('/dashboard')"
@@ -40,7 +48,7 @@ const isActive = (path: string) => route.path === path;
         </UButton>
 
         <UButton
-          v-if="!isActive('/jobs') && isLoggedIn"
+          v-if="hydrated && !isActive('/jobs') && isLoggedIn"
           variant="link"
           color="primary"
           @click="router.push('/jobs')"
@@ -49,7 +57,7 @@ const isActive = (path: string) => route.path === path;
         </UButton>
 
         <UButton
-          v-if="showLogout"
+          v-if="hydrated && showLogout"
           icon="i-heroicons-arrow-left-on-rectangle"
           variant="outline"
           size="sm"

@@ -1,72 +1,74 @@
 # 🤝 Job Platform
 
-This is a Nuxt 3 project created as part of the **Home Assignment**. It simulates a simple job advertisement platform, enabling users to post, manage, search, and apply for job offers with mock authentication.
+This Nuxt 3-based application showcases a streamlined job advertisement platform where users can post, manage, browse, and apply for job listings. It's designed to demonstrate role-based functionality, responsive UI, and modern frontend architecture.
 
-**🌐 Live Demo:** [https://kibit-job-platform.vercel.app](https://kibit-job-platform.vercel.app)
+**🌐 Live Demo:** [https://mark-job-platform.vercel.app](https://mark-job-platform.vercel.app)
 
 ---
 
-## 📦 Stack
+## 📦 Tech Stack
 
-- [Nuxt 3](https://nuxt.com) – Vue 3 framework with SSR
-- [TypeScript](https://www.typescriptlang.org/) – static typing
-- [Tailwind CSS](https://tailwindcss.com/) – utility-first styling
-- [Nuxt UI](https://ui.nuxt.com/) – official component library
-- [Zod](https://zod.dev/) – schema-based form validation
-- [Pinia](https://pinia.vuejs.org/) – state management with persistence
-- [Vitest](https://vitest.dev/) – unit testing framework
-- [Vue Test Utils](https://test-utils.vuejs.org/) – component test helpers
-- [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/) – linting and formatting
-- [Vercel](https://vercel.com/) – production deployment
+- [Nuxt 3](https://nuxt.com) – Vue 3 framework with SSR support  
+- [TypeScript](https://www.typescriptlang.org/) – static typing  
+- [Tailwind CSS](https://tailwindcss.com/) – utility-first styling  
+- [Nuxt UI](https://ui.nuxt.com/) – official UI components  
+- [Zod](https://zod.dev/) – schema-based form validation  
+- [Pinia](https://pinia.vuejs.org/) – state management with persistence  
+- [Vitest](https://vitest.dev/) – unit testing framework  
+- [Vue Test Utils](https://test-utils.vuejs.org/) – component test helpers  
+- [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/) – linting and formatting  
+- [Vercel](https://vercel.com/) – deployment  
 
 ---
 
 ## ✨ Features
 
-### 👤 Authentication
+### 👤 Authentication & Access Control
 
-- Mock login using predefined demo users
-- Route protection based on roles
-- Auth state managed with Pinia and persisted to localStorage
+- Mock login using predefined demo users  
+- Role-based route protection and redirects  
+- Auth state stored in Pinia with localStorage persistence  
 
-### 🔍 Job Search (Seeker role)
+### 🔍 Job Search (Applicant role)
 
-- Browse all job listings
-- Filter jobs using search (with debounce)
-- View job details and apply
-- Prevent duplicate applications
+- Browse all public job listings  
+- Live search with debounce  
+- View detailed job information  
+- Apply to jobs (only once per listing)  
+- Prevent duplicate submissions  
 
 ### 📬 Job Management (Employer role)
 
-- Post new job offers via modal
-- Edit/delete your own jobs
-- View all posted jobs in your dashboard
+- Create job listings via modal  
+- Edit or delete your own listings  
+- Manage all jobs via employer dashboard  
 
 ### 📝 Applications
 
-- Seeker users can apply to jobs
-- Application state is stored in localStorage
-- Applied jobs visually marked
+- Applications stored locally per user  
+- Applied jobs are visually marked  
+- Logic to avoid duplicate submissions  
 
 ---
 
-## 👥 Roles & Permissions
+## 👥 User Roles
 
-### 🟢 Job Seeker
+### 🟢 Job Applicant
 
-- Can search and view all jobs
-- Can apply to jobs (once per job)
-- Cannot access the dashboard
-- Redirected to `/jobs` after login
+- Access to public landing and job pages  
+- Can apply to jobs (1 per job)  
+- Redirected to `/jobs` after login  
+- Cannot access the dashboard  
 
 ### 🔵 Employer
 
-- Can post, edit, delete jobs
-- Has access to the `/dashboard` to manage job listings
-- Can view all jobs (read-only)
-- Cannot apply to jobs
+- Full access to dashboard and job management  
+- Can post, edit, delete jobs  
+- Can browse listings (read-only)  
+- Cannot apply to jobs  
+- Redirected to `/dashboard` after login  
 
-All role-based access is enforced via Nuxt route middleware.
+All role-based access is handled via Nuxt route middleware.
 
 ---
 
@@ -95,23 +97,25 @@ Visit `http://localhost:3000` to see the app.
 
 ---
 
-## 🔑 Demo Accounts
+## 🔑 Test Accounts
 
 | Role      | Email                                                 | Password    |
 | --------- | ----------------------------------------------------- | ----------- |
 | Employer  | [employer@example.com](mailto:employer@example.com)   | password123 |
 | Applicant | [applicant@example.com](mailto:applicant@example.com) | password123 |
 
-You can test the full app with these predefined users. No registration required.
+No registration required — just login and explore.
 
 ---
 
-## 📂 Project Structure Overview
+## 📂 Project Structure
 
 ```
 ├── components/              # UI components & job modal
 ├── composables/             # Custom logic (useAuth, etc.)
 ├── layouts/                 # App layout
+├── middleware/              # Navigation guards
+│   └── auth.global.ts       # Auth & role-based redirect logic
 ├── pages/                   # Route-based views
 │   ├── index.vue            # Landing page
 │   ├── login.vue            # Login page
@@ -125,44 +129,27 @@ You can test the full app with these predefined users. No registration required.
 
 ---
 
-## 🧱 Architecture Summary
-
-- Authentication via composable (`useAuth`) and `authStore`
-- User and job data is stored in localStorage
-- Forms are validated with Zod schemas
-- Pinia manages auth and job state globally
-- Role-based navigation guard with Nuxt middleware
-- Fully responsive design with Nuxt UI components
-
----
-
 ## 🧪 Testing
 
-You can run unit tests using [Vitest](https://vitest.dev/):
+Run unit tests with [Vitest](https://vitest.dev/):
 
 ```bash
 pnpm vitest
 ```
 
-Unit test example included for `JobCreateModal.vue`
+Includes an example unit test for `JobCreateModal.vue`.
 
 ---
 
-## ✅ Assignment Compliance Checklist
+## ✔️ Feature Checklist
 
-- [x] Landing page for unauthenticated users
-- [x] Login with mocked users
-- [x] Dashboard for job advertisers
-- [x] Job posting (create/edit/delete)
-- [x] Search + detail view + application option
-- [x] Mock API layer using localStorage
-- [x] Nuxt 3 with Tailwind CSS and TypeScript
-- [x] Fully responsive
-- [x] Role-based navigation guard
-- [x] Extra: Pinia + composables + Zod validation + testing
-
----
-
-## 👨‍💻 Author
-
-Built by Márk Varga for the Home Assignment.
+- [x] Public landing page and job list  
+- [x] Login with role-based redirection  
+- [x] Employer dashboard for job management  
+- [x] Job creation, editing, and deletion  
+- [x] Search, view details, and apply to jobs  
+- [x] LocalStorage as a mock data layer  
+- [x] Fully responsive layout  
+- [x] Form validation with Zod  
+- [x] State management with Pinia  
+- [x] Unit testing with Vitest

@@ -64,14 +64,17 @@ const handleSubmit = async () => {
     });
   } else {
     if (!auth.isLoggedIn || !auth.getUser) return;
+
     const newJob = {
       ...formData.value,
       id: Date.now(),
       createdAt: new Date().toISOString(),
       userId: auth.getUser.id,
     };
+
     jobs.addJob(newJob);
     await jobs.loadJobs();
+
     toast.add({
       title: 'Job created successfully',
       description: 'Your job was posted.',
